@@ -14,8 +14,9 @@ class Vi extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.purple,
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
         ),
       ),
       debugShowCheckedModeBanner: false,
@@ -29,6 +30,6 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MainApp();
+    return const AuthScreen();
   }
 }
