@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:vi/auth/auth/provider/auth_provider.dart';
 import 'package:vi/auth/auth/screen/components/auth_button.dart';
 
-class AuthScreen extends StatelessWidget {
+class AuthScreen extends ConsumerWidget {
   const AuthScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
         body: Center(
       child: Padding(
@@ -27,12 +29,16 @@ class AuthScreen extends StatelessWidget {
             const SizedBox(
               height: 60,
             ),
-            const AuthButton(
-                buttonName: 'Continue with Apple',
-                iconWidget: Icon(
-                  Icons.apple,
-                  size: 30,
-                )),
+            AuthButton(
+              buttonName: 'Continue with Apple',
+              iconWidget: const Icon(
+                Icons.apple,
+                size: 30,
+              ),
+              function: () {
+                print('Apple sign in');
+              },
+            ),
             const SizedBox(
               height: 20,
             ),
@@ -42,6 +48,7 @@ class AuthScreen extends StatelessWidget {
                 'assets/images/icons/google.png',
                 height: 25,
               ),
+              function: ref.read(authProvider.notifier).signInWithGoogle,
             )
           ],
         ),

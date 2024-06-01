@@ -4,13 +4,19 @@ import 'package:google_fonts/google_fonts.dart';
 class AuthButton extends StatelessWidget {
   final Widget iconWidget;
   final String buttonName;
+  final Function function;
   const AuthButton(
-      {super.key, required this.buttonName, required this.iconWidget});
+      {super.key,
+      required this.buttonName,
+      required this.iconWidget,
+      required this.function});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        function();
+      },
       child: Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(

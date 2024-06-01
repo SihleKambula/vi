@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vi/app/app.dart';
 import 'firebase_options.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 //screens
 import 'package:vi/auth/auth/screen/auth_screen.dart';
@@ -10,7 +13,7 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const Vi());
+  runApp(const ProviderScope(child: Vi()));
 }
 
 class Vi extends StatelessWidget {
@@ -37,6 +40,16 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const AuthScreen();
+    return Scaffold(
+        body: StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return const MainApp();
+        } else {
+          return const AuthScreen();
+        }
+      },
+    ));
   }
 }
