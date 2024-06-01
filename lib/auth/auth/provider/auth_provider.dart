@@ -24,4 +24,8 @@ class Auth extends _$Auth {
         await FirebaseAuth.instance.signInWithCredential(credential);
     state = '$userCred';
   }
+
+  void signOut() async {
+    await FirebaseAuth.instance.signOut();
+  }
 }
