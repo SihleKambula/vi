@@ -7,13 +7,24 @@ class ProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(authProvider);
     return Scaffold(
       body: Center(
-          child: TextButton(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text('Name: ${user?.displayName}'),
+          const SizedBox(
+            height: 20,
+          ),
+          Text('Email: ${user?.email}'),
+          TextButton(
               onPressed: () {
                 ref.read(authProvider.notifier).signOut();
               },
-              child: const Text('Logout'))),
+              child: const Text('Logout')),
+        ],
+      )),
     );
   }
 }
