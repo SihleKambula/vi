@@ -29,7 +29,9 @@ class _MainAppState extends State<MainApp> {
         elevation: 0,
         height: 60,
         selectedIndex: selectedScreen,
-        indicatorColor: const Color.fromARGB(73, 0, 140, 255),
+        backgroundColor: const Color.fromARGB(255, 243, 243, 243),
+        // indicatorColor: const Color.fromARGB(73, 0, 140, 255),
+        indicatorColor: const Color.fromARGB(255, 255, 255, 255),
         labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
         onDestinationSelected: (value) {
           setState(() {
