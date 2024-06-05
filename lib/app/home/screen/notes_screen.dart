@@ -2,12 +2,58 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:vi/app/home/model/notes_model.dart';
 import 'package:vi/app/home/screen/components/notes_card.dart';
+import 'package:audio_waveforms/audio_waveforms.dart';
+import 'package:vi/app/home/services/note_services.dart';
 
 class NotesScreen extends StatelessWidget {
   const NotesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    RecorderController recorderController = RecorderController();
+
+    Widget bottomSheet() => Container(
+          decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+              boxShadow: [
+                BoxShadow(
+                    blurRadius: 2,
+                    blurStyle: BlurStyle.outer,
+                    color: Colors.grey)
+              ]),
+          child: SizedBox(
+              height: 300,
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        AudioWaveforms(
+                          size: Size(MediaQuery.of(context).size.width, 200.0),
+                          recorderController: recorderController,
+                          enableGesture: true,
+                          waveStyle: const WaveStyle(
+                            waveColor: Colors.blue,
+                            spacing: 8.0,
+                            extendWaveform: true,
+                            showMiddleLine: false,
+                          ),
+                        ),
+                        IconButton(
+                            onPressed: () {
+                              NoteServices()
+                                  .recordEventStop(recorderController);
+                              Navigator.pop(context);
+                            },
+                            icon: const Icon(Icons.mic_off))
+                      ]),
+                ),
+              )),
+        );
+
     final List<NotesModel> notes = [
       NotesModel(
           title: 'First Note',
@@ -17,11 +63,6 @@ class NotesScreen extends StatelessWidget {
       NotesModel(
           title: 'Second Note',
           date: '02 March 2024',
-          transcript:
-              'This is the first note for your application. Now go and do something better with your life. Conditions will never be perfect'),
-      NotesModel(
-          title: 'Third Note',
-          date: '16 December 2023',
           transcript:
               'This is the first note for your application. Now go and do something better with your life. Conditions will never be perfect'),
     ];
@@ -35,7 +76,11 @@ class NotesScreen extends StatelessWidget {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            showBottomSheet(
+                context: context, builder: (context) => bottomSheet());
+            NoteServices().recordEvent(recorderController);
+          },
           child: const Icon(Iconsax.microphone),
         ),
         body: Padding(
