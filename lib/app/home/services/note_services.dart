@@ -21,19 +21,19 @@ class NoteServices {
     controller.refresh();
   }
 
-  void getData() async {
-    var url = Uri.http('a330-102-182-56-195.ngrok-free.app', 'vi');
-    var res = await http.get(url);
-    if (res.statusCode == 200) {
-      var jsonResponse = convert.jsonDecode(res.body) as Map<String, dynamic>;
-      print(jsonResponse['message']);
-    }
-  }
+  // void getData() async {
+  //   var url = Uri.http('a330-102-182-56-195.ngrok-free.app', 'vi');
+  //   var res = await http.get(url);
+  //   if (res.statusCode == 200) {
+  //     var jsonResponse = convert.jsonDecode(res.body) as Map<String, dynamic>;
+  //     print(jsonResponse['message']);
+  //   }
+  // }
 
   //Send recording to AI backend
   void sendRecordToAI(String filePath) async {
     var request = http.MultipartRequest(
-        'POST', Uri.parse('https://36ff-102-182-56-195.ngrok-free.app/vi'));
+        'POST', Uri.parse('https://7d8d-192-143-9-179.ngrok-free.app/vi'));
 
     // add file
     request.files.add(await http.MultipartFile.fromPath('event', filePath));

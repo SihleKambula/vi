@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:vi/app/home/model/notes_model.dart';
 import 'package:vi/app/home/screen/components/notes_card.dart';
 import 'package:audio_waveforms/audio_waveforms.dart';
+import 'package:vi/app/home/services/firestore.dart';
 import 'package:vi/app/home/services/note_services.dart';
 
 class NotesScreen extends StatelessWidget {
@@ -11,7 +13,7 @@ class NotesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     RecorderController recorderController = RecorderController();
-
+    final FirestoreService firestoreService = FirestoreService();
     Widget bottomSheet() => Container(
           decoration: const BoxDecoration(
               color: Colors.white,
@@ -53,19 +55,6 @@ class NotesScreen extends StatelessWidget {
                 ),
               )),
         );
-
-    final List<NotesModel> notes = [
-      NotesModel(
-          title: 'First Note',
-          date: '18 June 2024',
-          transcript:
-              'This is the first note for your application. Now go and do something better with your life. Conditions will never be perfect'),
-      NotesModel(
-          title: 'Second Note',
-          date: '02 March 2024',
-          transcript:
-              'This is the first note for your application. Now go and do something better with your life. Conditions will never be perfect'),
-    ];
     return Scaffold(
         backgroundColor: const Color.fromARGB(255, 243, 243, 243),
         appBar: AppBar(
@@ -85,11 +74,22 @@ class NotesScreen extends StatelessWidget {
         ),
         body: Padding(
           padding: const EdgeInsets.all(12),
-          child: ListView.builder(
-            physics: const BouncingScrollPhysics(),
-            itemCount: notes.length,
-            itemBuilder: (context, index) {
-              return NotesCard(note: notes[index]);
+          child: StreamBuilder<QuerySnapshot>(
+            stream: firestoreService.getNotesStream(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                List notes = snapshot.data!.docs;
+                return ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: notes.length,
+                  itemBuilder: (context, index) {
+                    return NotesCard(note: notes[index]);
+                  },
+                );
+              }
+              return const Center(
+                child: Text('No notes available'),
+              );
             },
           ),
         ));

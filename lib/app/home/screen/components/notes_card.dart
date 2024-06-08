@@ -1,13 +1,29 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:vi/app/home/model/notes_model.dart';
+import 'package:intl/intl.dart';
 
 class NotesCard extends StatelessWidget {
   const NotesCard({super.key, required this.note});
-  final NotesModel note;
+  final DocumentSnapshot note;
 
   @override
   Widget build(BuildContext context) {
+    //document ID
+    String docID = note.id;
+
+    //document data
+    Map<String, dynamic> data = note.data() as Map<String, dynamic>;
+
+    //card variables
+    String title = data['transcript'].substring(0, 15);
+    String transcript = data['transcript'];
+
+    //Getting the date
+    Timestamp timestamp = data['createdAt'];
+    DateTime dateTime = timestamp.toDate();
+    String date = DateFormat.yMMMd().format(dateTime).toString();
+
     return Card(
       borderOnForeground: true,
       elevation: 2,
@@ -31,11 +47,11 @@ class NotesCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        note.title,
+                        '$title...',
                         style: const TextStyle(fontWeight: FontWeight.w700),
                       ),
                       Text(
-                        note.date,
+                        date,
                         style:
                             const TextStyle(color: Colors.grey, fontSize: 12),
                       )
@@ -48,7 +64,7 @@ class NotesCard extends StatelessWidget {
               height: 10,
             ),
             Text(
-              note.transcript,
+              transcript,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(color: Colors.grey[600]),
