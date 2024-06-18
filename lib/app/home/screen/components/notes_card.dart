@@ -10,7 +10,7 @@ class NotesCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //document ID
-    String docID = note.id;
+    // String docID = note.id;
 
     //document data
     Map<String, dynamic> data = note.data() as Map<String, dynamic>;

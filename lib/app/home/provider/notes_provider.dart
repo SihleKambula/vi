@@ -1,6 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert' as convert;
 
 part 'notes_provider.g.dart';
 
