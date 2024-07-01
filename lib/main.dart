@@ -35,6 +35,7 @@ class Vi extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
         textTheme: GoogleFonts.nunitoTextTheme(),
+        scaffoldBackgroundColor: const Color.fromARGB(255, 243, 243, 243),
         floatingActionButtonTheme: const FloatingActionButtonThemeData(
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,
