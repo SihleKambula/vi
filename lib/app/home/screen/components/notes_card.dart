@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 
@@ -10,7 +11,7 @@ class NotesCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //document ID
-    // String docID = note.id;
+    String noteID = note.id;
 
     //document data
     Map<String, dynamic> data = note.data() as Map<String, dynamic>;
@@ -24,52 +25,57 @@ class NotesCard extends StatelessWidget {
     DateTime dateTime = timestamp.toDate();
     String date = DateFormat.yMMMd().format(dateTime).toString();
 
-    return Card(
-      borderOnForeground: true,
-      elevation: 2,
-      child: Container(
-        padding: const EdgeInsets.all(15),
-        decoration: BoxDecoration(
-            color: Colors.white70, borderRadius: BorderRadius.circular(10)),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(10)),
-                    child: const Icon(Iconsax.note_text)),
-                Container(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '$title...',
-                        style: const TextStyle(fontWeight: FontWeight.w700),
-                      ),
-                      Text(
-                        date,
-                        style:
-                            const TextStyle(color: Colors.grey, fontSize: 12),
-                      )
-                    ],
+    return GestureDetector(
+      onTap: () {
+        context.push('/singleNote/$noteID');
+      },
+      child: Card(
+        borderOnForeground: true,
+        elevation: 2,
+        child: Container(
+          padding: const EdgeInsets.all(15),
+          decoration: BoxDecoration(
+              color: Colors.white70, borderRadius: BorderRadius.circular(10)),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(10)),
+                      child: const Icon(Iconsax.note_text)),
+                  Container(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '$title...',
+                          style: const TextStyle(fontWeight: FontWeight.w700),
+                        ),
+                        Text(
+                          date,
+                          style:
+                              const TextStyle(color: Colors.grey, fontSize: 12),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Text(
-              transcript,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(color: Colors.grey[600]),
-            ),
-          ],
+                ],
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                transcript,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(color: Colors.grey[600]),
+              ),
+            ],
+          ),
         ),
       ),
     );
