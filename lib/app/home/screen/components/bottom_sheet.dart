@@ -4,6 +4,7 @@ import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:vi/app/home/provider/notes_provider.dart';
 import 'package:vi/app/home/services/note_services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:vi/auth/auth/provider/auth_provider.dart';
 
 class RecordingSheet extends ConsumerWidget {
   const RecordingSheet({super.key, required this.recorderController});
@@ -11,6 +12,7 @@ class RecordingSheet extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(authProvider);
     return Container(
       decoration: const BoxDecoration(
           color: Colors.white,
@@ -46,7 +48,7 @@ class RecordingSheet extends ConsumerWidget {
                           Navigator.pop(context);
                           Map<String, dynamic> state = await ref
                               .read(notesNotifierProvider.notifier)
-                              .sendRecordToAI(path);
+                              .sendRecordToAI(path, user);
                           recorderController.refresh();
 
                           // Show toast message upon completion

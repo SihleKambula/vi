@@ -7,6 +7,7 @@ import 'package:vi/app/app.dart';
 import 'package:vi/app/single_note_screen/screen/single_note_screen.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 //screens
 import 'package:vi/auth/auth/screen/auth_screen.dart';
@@ -15,6 +16,11 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  //Enable firestore persistance
+  FirebaseFirestore.instance.settings = const Settings(
+    persistenceEnabled: true,
   );
   runApp(const ProviderScope(child: Vi()));
 }

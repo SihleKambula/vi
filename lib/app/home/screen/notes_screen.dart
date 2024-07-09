@@ -8,6 +8,7 @@ import 'package:vi/app/home/screen/components/notes_card.dart';
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:vi/app/home/services/firestore.dart';
 import 'package:vi/app/home/services/note_services.dart';
+import 'package:vi/auth/auth/provider/auth_provider.dart';
 
 class NotesScreen extends ConsumerWidget {
   const NotesScreen({super.key});
@@ -19,6 +20,7 @@ class NotesScreen extends ConsumerWidget {
 
     //riverpod
     final notesProvider = ref.watch(notesNotifierProvider);
+    final user = ref.watch(authProvider);
 
     // Bottomsheet for recording voice notes
     Widget bottomSheet() =>
@@ -56,8 +58,16 @@ class NotesScreen extends ConsumerWidget {
               child: Padding(
                 padding: const EdgeInsets.all(12),
                 child: StreamBuilder<QuerySnapshot>(
-                  stream: firestoreService.getNotesStream(),
+                  stream: firestoreService.getNotesStream(user),
                   builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                          child:
+                              CircularProgressIndicator()); // Show a loading indicator
+                    }
+                    if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    }
                     if (snapshot.hasData) {
                       List notes = snapshot.data!.docs;
                       return ListView.builder(
